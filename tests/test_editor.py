@@ -30,6 +30,7 @@ def test_window_applies_live_configuration() -> None:
     assert window.status_bar.isHidden() is True
     assert window.size().width() == 1000
     assert window.size().height() == 600
+    assert window.editor.contextMenuPolicy().name == "NoContextMenu"
     window.close()
     app.processEvents()
 

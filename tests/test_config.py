@@ -2,6 +2,7 @@ from pathlib import Path
 
 from omarchywriter.config import (
     CONFIG_DEFAULTS,
+    Config,
     init_user_config,
     load_config,
     load_omarchy_colors,
@@ -45,6 +46,63 @@ auto_save_interval = 12
     assert config.gui.window_width == 1200
     assert config.behavior.auto_save is True
     assert config.behavior.auto_save_interval == 12
+
+
+def test_default_config_values() -> None:
+    config = Config()
+
+    assert config.editor.font == "Iosevka"
+    assert config.editor.font_size == 12
+    assert config.editor.line_spacing == 1.2
+    assert config.editor.tab_width == 4
+    assert config.editor.show_line_numbers is True
+    assert config.editor.word_wrap is False
+    assert config.editor.paragraph_spacing == 0
+    assert config.editor.cursor_width == 2
+    assert config.gui.font == "Iosevka"
+    assert config.gui.font_size == 9
+    assert config.gui.window_width == 1100
+    assert config.gui.window_height == 700
+    assert config.gui.show_status_bar is True
+    assert config.gui.show_tab_bar is False
+    assert config.gui.center_on_screen is True
+    assert config.behavior.auto_save is True
+    assert config.behavior.auto_save_interval == 5
+    assert config.behavior.confirm_quit is True
+
+
+def test_existing_legacy_defaults_are_migrated_without_overwriting_custom_values(tmp_path: Path) -> None:
+    config_path = tmp_path / "config.toml"
+    colors_path = tmp_path / "colors.toml"
+    config_path.write_text(
+        """[editor]
+font = "JetBrains Mono"
+font_size = 14
+show_line_numbers = false
+word_wrap = true
+
+[gui]
+font_size = 12
+window_width = 900
+show_status_bar = true
+
+[behavior]
+auto_save = false
+""",
+        encoding="utf-8",
+    )
+
+    init_user_config(config_path, colors_path)
+    migrated = load_config(config_path)
+
+    assert migrated.editor.font == "JetBrains Mono"
+    assert migrated.editor.font_size == 12
+    assert migrated.editor.show_line_numbers is True
+    assert migrated.editor.word_wrap is False
+    assert migrated.gui.font_size == 9
+    assert migrated.gui.window_width == 1100
+    assert migrated.gui.show_tab_bar is False
+    assert migrated.behavior.auto_save is True
 
 
 def test_omarchy_palette_is_mapped_without_writing_source(tmp_path: Path) -> None:

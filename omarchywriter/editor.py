@@ -91,6 +91,9 @@ class Editor(QPlainTextEdit):
         self._applied_editor_settings: tuple[object, ...] | None = None
         self._highlighter = MarkdownHighlighter(self)
         self.setAcceptDrops(True)
+        # Keep the editor deliberately minimal: keyboard editing remains
+        # available, but right-click must not open an extra context-menu GUI.
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         self.setUndoRedoEnabled(True)
         self.cursorPositionChanged.connect(self._update_current_line)
 
