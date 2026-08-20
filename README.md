@@ -29,14 +29,14 @@ Requires Python 3.10 or newer and a working Qt/Wayland desktop session.
 Clone the repository and run the user-scoped installer:
 
 ```bash
-git clone https://github.com/YOUR-USER/omarchywriter.git
+git clone https://github.com/abhinavbxr/omarchywriter.git
 cd omarchywriter
 chmod +x install.sh
 ./install.sh
 ```
 
-Replace `YOUR-USER` with the GitHub account that owns your fork or repository.
-If you already have a checkout, start at `cd omarchywriter`.
+If you are installing a fork, replace the clone URL with your fork's URL. If
+you already have a checkout, start at `cd omarchywriter`.
 
 The script installs a private virtual environment under
 `~/.local/share/omarchywriter/`, creates the `omarchywriter` command under
